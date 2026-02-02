@@ -1,0 +1,17 @@
+name: CI-CD
+on:
+    push:
+        branches: ["develop"]
+
+jobs:
+    build-develop:
+        runs-on: [self-hosted, lucky-event-develop]
+        if: github.ref == 'refs/heads/develop'
+        steps:
+            - name: Build and run image for develop
+              run: |
+                  cd ~/sources/lucky-events/lucky-event
+                  git pull
+                  cd ../lucky-event-docker
+                  docker compose up -d --build lucky-event
+                  docker system prune -f
