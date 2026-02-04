@@ -4,6 +4,7 @@ import { ImageElement } from '../../../components/elements/image/image.element';
 import { StackRowAlignCenter } from '../../../components/styles/stack.style';
 import { Employee } from '../../../common/data';
 import avatar from '../../../assets/images/avatar-default.png';
+import { shouldHideEmployeeDetails } from '../lucky-draw-2026.constants';
 
 interface LuckyListUserPartProps {
   remainingCandidates: Employee[];
@@ -39,68 +40,71 @@ export const LuckyListUserPart: React.FC<LuckyListUserPartProps> = ({ remainingC
               msOverflowStyle: 'none',
             }}
           >
-            {remainingCandidates.map(employee => (
-              <StackRowAlignCenter
-                key={employee.code}
-                sx={{
-                  gap: 1,
-                  padding: '16px 24px',
-                  width: 856,
-                  borderRadius: '16px',
-                  border: '1px solid #fff',
-                  background: 'linear-gradient(144deg, #69F8E5 -44.06%, #E8FDFB 59.8%)',
-                }}
-              >
-                <Typography
+            {remainingCandidates.map(employee => {
+              const hiddenDetails = shouldHideEmployeeDetails(employee.code);
+              return (
+                <StackRowAlignCenter
+                  key={employee.code}
                   sx={{
-                    fontFamily: 'Montserrat, sans-serif',
-                    fontWeight: 700,
-                    fontSize: 36,
-                    color: '#026D60',
-                    whiteSpace: 'nowrap',
-                    minWidth: 230,
+                    gap: 1,
+                    padding: '16px 24px',
+                    width: 856,
+                    borderRadius: '16px',
+                    border: '1px solid #fff',
+                    background: 'linear-gradient(144deg, #69F8E5 -44.06%, #E8FDFB 59.8%)',
                   }}
                 >
-                  {employee.lotteryCode} - {employee.code}
-                </Typography>
-                <ImageElement
-                  onError={e => {
-                    (e.currentTarget as HTMLImageElement).src = avatar;
-                  }}
-                  url={`/avatar/${employee.code}.png`}
-                  sx={{ width: 84, height: 84, borderRadius: '100px' }}
-                />
-                <Stack sx={{ flex: 1 }}>
                   <Typography
                     sx={{
                       fontFamily: 'Montserrat, sans-serif',
                       fontWeight: 700,
-                      fontSize: 32,
-                      lineHeight: 'normal',
+                      fontSize: 36,
                       color: '#026D60',
                       whiteSpace: 'nowrap',
+                      minWidth: remainingCandidates.length === 1 ? 'auto' : 230,
                     }}
                   >
-                    {employee.name}
+                    {employee.lotteryCode} {!hiddenDetails && employee?.code ? `- ${employee.code}` : ''}
                   </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily: 'Montserrat, sans-serif',
-                      fontWeight: 700,
-                      fontSize: 24,
-                      lineHeight: 'normal',
-                      color: '#026D60',
-                      textOverflow: 'ellipsis',
-                      overflow: 'hidden',
-                      whiteSpace: 'nowrap',
-                      maxWidth: 450,
+                  <ImageElement
+                    onError={e => {
+                      (e.currentTarget as HTMLImageElement).src = avatar;
                     }}
-                  >
-                    {employee.part}
-                  </Typography>
-                </Stack>
-              </StackRowAlignCenter>
-            ))}
+                    url={`/avatar/${employee.code}.png`}
+                    sx={{ width: 84, height: 84, borderRadius: '100px' }}
+                  />
+                  <Stack sx={{ flex: 1 }}>
+                    <Typography
+                      sx={{
+                        fontFamily: 'Montserrat, sans-serif',
+                        fontWeight: 700,
+                        fontSize: 32,
+                        lineHeight: 'normal',
+                        color: '#026D60',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {employee.name}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontFamily: 'Montserrat, sans-serif',
+                        fontWeight: 700,
+                        fontSize: 24,
+                        lineHeight: 'normal',
+                        color: '#026D60',
+                        textOverflow: 'ellipsis',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        maxWidth: 450,
+                      }}
+                    >
+                      {employee.part}
+                    </Typography>
+                  </Stack>
+                </StackRowAlignCenter>
+              );
+            })}
           </div>
         </div>
       )}

@@ -3,7 +3,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import { ImageElement } from '../../../components/elements/image/image.element';
 import { StackRowAlignCenter } from '../../../components/styles/stack.style';
 import { PrizeWinner } from '../../../context/lucky-draw.context';
-import { getMaxDisplay } from '../lucky-draw-2026.constants';
+import { getMaxDisplay, shouldHideEmployeeDetails } from '../lucky-draw-2026.constants';
 import avatar from '../../../assets/images/avatar-default.png';
 import { LuckyWinnerOwnerResultPart } from './lucky-winner/winner-lucky-owner-result.part';
 import urlBoxAvatar from '../../../assets/images/winner-4.svg';
@@ -67,65 +67,71 @@ export const AwardeeListPart: React.FC<AwardeeListPartProps> = ({ awardees, isRe
                     gap: '24px',
                   }}
                 >
-                  {winners.map(awardee => (
-                    <StackRowAlignCenter
-                      key={awardee.employeeCode}
-                      sx={{
-                        gap: 2,
-                        padding: '24px',
-                        borderRadius: '24px',
-                        border: '1px solid #fff',
-                        background: 'linear-gradient(144deg, #69F8E5 -44.06%, #E8FDFB 59.8%)',
-                      }}
-                    >
-                      <Typography
+                  {winners.map(awardee => {
+                    const hiddenDetails = shouldHideEmployeeDetails(awardee.employeeCode);
+                    return (
+                      <StackRowAlignCenter
+                        key={awardee.employeeCode}
                         sx={{
-                          fontFamily: 'Montserrat, sans-serif',
-                          fontWeight: 700,
-                          fontSize: 40,
-                          color: '#026D60',
-                          minWidth: 240,
+                          gap: 2,
+                          padding: '24px',
+                          borderRadius: '24px',
+                          border: '1px solid #fff',
+                          background: 'linear-gradient(144deg, #69F8E5 -44.06%, #E8FDFB 59.8%)',
                         }}
                       >
-                        {employees.find(e => e.code === awardee.employeeCode)?.lotteryCode || ''} - {awardee.employeeCode}
-                      </Typography>
-                      <ImageElement
-                        onError={e => {
-                          (e.currentTarget as HTMLImageElement).src = avatar;
-                        }}
-                        url={`/avatar/${awardee.employeeCode}.png`}
-                        sx={{ width: 84, height: 84, borderRadius: '100px' }}
-                      />
-                      <Stack sx={{ flex: 1 }}>
                         <Typography
                           sx={{
                             fontFamily: 'Montserrat, sans-serif',
                             fontWeight: 700,
-                            fontSize: 32,
-                            lineHeight: 'normal',
+                            fontSize: 40,
+
                             color: '#026D60',
+                            textAlign: hiddenDetails ? 'center' : 'left',
+                            minWidth: winners.length === 1 ? 'auto' : 240,
                           }}
                         >
-                          {awardee.employeeName}
+                          {employees.find(e => e.code === awardee.employeeCode)?.lotteryCode || ''}
+                          {!hiddenDetails && awardee?.employeeCode ? `- ${awardee.employeeCode}` : ''}
                         </Typography>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Montserrat, sans-serif',
-                            fontWeight: 700,
-                            fontSize: 24,
-                            lineHeight: 'normal',
-                            color: '#026D60',
-                            textOverflow: 'ellipsis',
-                            maxWidth: 450,
-                            overflow: 'hidden',
-                            whiteSpace: 'nowrap',
+                        <ImageElement
+                          onError={e => {
+                            (e.currentTarget as HTMLImageElement).src = avatar;
                           }}
-                        >
-                          {awardee.part}
-                        </Typography>
-                      </Stack>
-                    </StackRowAlignCenter>
-                  ))}
+                          url={`/avatar/${awardee.employeeCode}.png`}
+                          sx={{ width: 84, height: 84, borderRadius: '100px' }}
+                        />
+                        <Stack sx={{ flex: 1 }}>
+                          <Typography
+                            sx={{
+                              fontFamily: 'Montserrat, sans-serif',
+                              fontWeight: 700,
+                              fontSize: 32,
+                              lineHeight: 'normal',
+                              color: '#026D60',
+                            }}
+                          >
+                            {awardee.employeeName}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontFamily: 'Montserrat, sans-serif',
+                              fontWeight: 700,
+                              fontSize: 24,
+                              lineHeight: 'normal',
+                              color: '#026D60',
+                              textOverflow: 'ellipsis',
+                              maxWidth: 450,
+                              overflow: 'hidden',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {awardee.part}
+                          </Typography>
+                        </Stack>
+                      </StackRowAlignCenter>
+                    );
+                  })}
                 </Box>
               </Box>
             </Stack>

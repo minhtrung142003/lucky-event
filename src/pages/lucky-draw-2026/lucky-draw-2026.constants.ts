@@ -195,3 +195,8 @@ export const getBannerImage = (prizeId: string): string => BANNER_MAP[prizeId] ?
 export const getWinnerBadge = (prizeId: string): string => WINNER_BADGE_MAP[prizeId] ?? winner1;
 
 export const getMaxDisplay = (prizeId: string): number => MAX_DISPLAY_MAP[prizeId] ?? 999;
+
+export const shouldHideEmployeeDetails = (code: string): boolean => {
+  const codeNum = parseInt(code, 10);
+  return codeNum >= 6001 && codeNum <= 6008;
+};

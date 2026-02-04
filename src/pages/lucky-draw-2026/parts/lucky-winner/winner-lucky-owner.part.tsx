@@ -4,6 +4,7 @@ import avatar from '../../../../assets/images/avatar-default.png';
 import { PrizeWinner } from '../../../../context/lucky-draw.context';
 import { STYLE } from '../../../../common/constant';
 import { employees, prizes2026 } from '../../../../common/data';
+import { shouldHideEmployeeDetails } from '../../lucky-draw-2026.constants';
 
 const avatarBreathingKeyframes = `
   @keyframes avatarBreathing {
@@ -21,6 +22,7 @@ interface WinnerModalProps {
 export const LuckyWinnerOwnerPart: React.FC<WinnerModalProps> = ({ awardees, urlBoxAvatar, urlRibbonBg }) => {
   const winner = Array.isArray(awardees) ? awardees[0] : awardees;
   const prize = prizes2026.find(p => p?.id === winner?.prizeId);
+  const hiddenDetails = shouldHideEmployeeDetails(winner.employeeCode);
 
   return (
     <>
@@ -96,7 +98,8 @@ export const LuckyWinnerOwnerPart: React.FC<WinnerModalProps> = ({ awardees, url
           }}
         >
           <Typography sx={{ color: '#026D60', fontSize: 64, fontWeight: 700, lineHeight: 'normal', fontFamily: 'Montserrat, sans-serif' }}>
-            {employees.find(e => e.code === winner?.employeeCode)?.lotteryCode || ''} - {winner?.employeeCode}
+            {employees.find(e => e.code === winner?.employeeCode)?.lotteryCode || ''}
+            {!hiddenDetails && winner?.employeeCode ? `- ${winner.employeeCode}` : ''}
           </Typography>
           <Typography
             sx={{

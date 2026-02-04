@@ -4,6 +4,7 @@ import avatar from '../../../../assets/images/avatar-default.png';
 import { PrizeWinner } from '../../../../context/lucky-draw.context';
 import { STYLE } from '../../../../common/constant';
 import { employees } from '../../../../common/data';
+import { shouldHideEmployeeDetails } from '../../lucky-draw-2026.constants';
 
 interface WinnerModalProps {
   awardees: PrizeWinner | PrizeWinner[];
@@ -13,7 +14,7 @@ interface WinnerModalProps {
 export const LuckyWinnerOwnerResultPart: React.FC<WinnerModalProps> = ({ awardees, urlBoxAvatar }) => {
   const awardeesList = Array.isArray(awardees) ? awardees : [awardees];
   const winner = awardeesList[0];
-
+  const hiddenDetails = shouldHideEmployeeDetails(winner.employeeCode);
   return (
     <React.Fragment>
       <Box
@@ -63,7 +64,8 @@ export const LuckyWinnerOwnerResultPart: React.FC<WinnerModalProps> = ({ awardee
           }}
         >
           <Typography sx={{ color: '#026D60', fontSize: '56px', fontWeight: 600, lineHeight: 'normal', fontFamily: 'Montserrat, sans-serif' }}>
-            {employees.find(e => e.code === winner?.employeeCode)?.lotteryCode || ''} - {winner?.employeeCode}
+            {employees.find(e => e.code === winner?.employeeCode)?.lotteryCode || ''}
+            {!hiddenDetails && winner?.employeeCode ? `- ${winner.employeeCode}` : ''}
           </Typography>
           <Typography
             sx={{
