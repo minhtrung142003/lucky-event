@@ -61,6 +61,7 @@ export const LuckyListUserPart: React.FC<LuckyListUserPartProps> = ({ remainingC
                       fontSize: 36,
                       color: '#026D60',
                       whiteSpace: 'nowrap',
+                      textAlign: hiddenDetails ? 'center' : 'left',
                       minWidth: remainingCandidates.length === 1 ? 'auto' : 230,
                     }}
                   >

@@ -26,18 +26,18 @@ const PRIZE_CONFIG: Record<PrizeId, PrizeConfig> = {
   second: { particleCount: 350, launchDelay: [300, 600], duration: 6000 },
   first: { particleCount: 450, launchDelay: [250, 500], duration: 7000 },
   // Special: Chậm hơn nhiều để tạo kịch tính
-  special: { particleCount: 700, launchDelay: [150, 350], duration: 100000, rocketSpeed: 0.8, rocketAccel: 1.2 },
+  special: { particleCount: 700, launchDelay: [150, 350], duration: 500000, rocketSpeed: 0.8, rocketAccel: 1.2 },
 };
 
 // Special Prize Sequence Timing (ms)
 export const SPECIAL_SEQUENCE = {
-  DARK_FADE_IN: 3000,       // Màn hình tối dần
-  ROCKETS_LAUNCH: 1000,    // Bắt đầu bắn 10 quả pháo
-  ROCKETS_FLIGHT: 3200,    // Thời gian bay lên (điều chỉnh để flash trước khi nổ)
-  EXPLOSION_FLASH: 1000,    // Flash sáng khi nổ
-  BRIGHT_REVEAL: 1000,      // Sáng rực lên
-  WINNER_APPEAR: 900,      // Winner hiện lên
-  CONFETTI_START: 800,     // Pháo giấy bắt đầu
+  DARK_FADE_IN: 3000, // Màn hình tối dần
+  ROCKETS_LAUNCH: 1000, // Bắt đầu bắn 10 quả pháo
+  ROCKETS_FLIGHT: 3200, // Thời gian bay lên (điều chỉnh để flash trước khi nổ)
+  EXPLOSION_FLASH: 1000, // Flash sáng khi nổ
+  BRIGHT_REVEAL: 1000, // Sáng rực lên
+  WINNER_APPEAR: 900, // Winner hiện lên
+  CONFETTI_START: 800, // Pháo giấy bắt đầu
 } as const;
 
 const DEFAULT_CONFIG: PrizeConfig = { particleCount: 300, launchDelay: [400, 800], duration: 5000 };
@@ -150,11 +150,11 @@ class Particle {
     }
     this.angle = random(0, Math.PI * 2);
     this.speed = random(3, 20);
-    this.friction = 0.96;  // Cao hơn = bay xa hơn
-    this.gravity = 0.9;    // Thấp hơn = rơi chậm hơn
+    this.friction = 0.96; // Cao hơn = bay xa hơn
+    this.gravity = 0.9; // Thấp hơn = rơi chậm hơn
     this.color = randomColor();
     this.alpha = 1;
-    this.decay = random(0.0007, 0.004);  // Thấp hơn = tồn tại lâu hơn
+    this.decay = random(0.0007, 0.004); // Thấp hơn = tồn tại lâu hơn
     this.size = random(1, 5);
   }
 
@@ -181,12 +181,7 @@ class Particle {
   }
 }
 
-export const Fireworks: React.FC<FireworksProps> = ({
-  prizeId,
-  isActive = false,
-  triggerId = 0,
-  zIndex = 2,
-}) => {
+export const Fireworks: React.FC<FireworksProps> = ({ prizeId, isActive = false, triggerId = 0, zIndex = 2 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fireworksRef = useRef<Firework[]>([]);
   const particlesRef = useRef<Particle[]>([]);
@@ -194,58 +189,70 @@ export const Fireworks: React.FC<FireworksProps> = ({
   const lastLaunchRef = useRef<number>(0);
   const sessionStartRef = useRef<number>(0);
   const lastTriggerRef = useRef<string | null>(null);
-  
+
   // Get config based on prizeId
   const config: PrizeConfig = prizeId ? PRIZE_CONFIG[prizeId] : DEFAULT_CONFIG;
   const nextLaunchDelayRef = useRef<number>(random(config.launchDelay[0], config.launchDelay[1]));
 
-  const createParticles = useCallback((x: number, y: number) => {
-    const count = config.particleCount;
-    for (let i = 0; i < count; i++) {
-      particlesRef.current.push(new Particle(x, y));
-    }
-  }, [config.particleCount]);
+  const createParticles = useCallback(
+    (x: number, y: number) => {
+      const count = config.particleCount;
+      for (let i = 0; i < count; i++) {
+        particlesRef.current.push(new Particle(x, y));
+      }
+    },
+    [config.particleCount]
+  );
 
-  const launchFirework = useCallback((targetX?: number, targetY?: number) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const cw = canvas.width;
-    const ch = canvas.height;
-    const startX = cw / 2 + random(-cw * 0.2, cw * 0.2);
-    const tx = targetX ?? random(cw * 0.1, cw * 0.9);
-    const ty = targetY ?? random(ch * 0.1, ch * 0.5);
-    // Use custom speed/accel from config
-    fireworksRef.current.push(new Firework(startX, ch, tx, ty, config.rocketSpeed, config.rocketAccel));
-  }, [config.rocketSpeed, config.rocketAccel]);
+  const launchFirework = useCallback(
+    (targetX?: number, targetY?: number) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const cw = canvas.width;
+      const ch = canvas.height;
+      const startX = cw / 2 + random(-cw * 0.2, cw * 0.2);
+      const tx = targetX ?? random(cw * 0.1, cw * 0.9);
+      const ty = targetY ?? random(ch * 0.1, ch * 0.5);
+      // Use custom speed/accel from config
+      fireworksRef.current.push(new Firework(startX, ch, tx, ty, config.rocketSpeed, config.rocketAccel));
+    },
+    [config.rocketSpeed, config.rocketAccel]
+  );
 
   // Launch 10 rockets simultaneously for Special Prize - EPIC grand finale effect
   // Slow rockets that fly up majestically before exploding together
-  const launchSimultaneousFireworks = useCallback((count: number = 10, slowMode: boolean = false) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const cw = canvas.width;
-    const ch = canvas.height;
-    
-    // Spread rockets across the screen width evenly
-    const spacing = cw / (count + 1);
-    const targetY = ch * 0.25; // All explode at same height (top quarter) for synchronized effect
-    
-    // Slow mode: rockets for dramatic effect (tuned to match flash timing ~1800ms)
-    // Lower speed + accel = slower rockets that take longer to reach target
-    const speed = slowMode ? 0.5 : (config.rocketSpeed ?? 2);
-    const accel = slowMode ? 1.015 : (config.rocketAccel ?? 1.05);
-    
-    for (let i = 0; i < count; i++) {
-      // Calculate X positions: evenly distributed from left to right
-      const startX = spacing * (i + 1) + random(-30, 30); // Start from ground
-      const targetX = spacing * (i + 1) + random(-50, 50); // Target with slight variance
-      
-      // Slight stagger (0-50ms) to make it feel more natural but still simultaneous
-      setTimeout(() => {
-        fireworksRef.current.push(new Firework(startX, ch, targetX, targetY + random(-20, 20), speed, accel));
-      }, random(0, 50));
-    }
-  }, [config.rocketSpeed, config.rocketAccel]);
+  const launchSimultaneousFireworks = useCallback(
+    (count: number = 10, slowMode: boolean = false) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const cw = canvas.width;
+      const ch = canvas.height;
+
+      // Spread rockets across the screen width evenly
+      const spacing = cw / (count + 1);
+      const targetY = ch * 0.25; // All explode at same height (top quarter) for synchronized effect
+
+      // Slow mode: rockets for dramatic effect (tuned to match flash timing ~1800ms)
+      // Lower speed + accel = slower rockets that take longer to reach target
+      const speed = slowMode ? 0.5 : (config.rocketSpeed ?? 2);
+      const accel = slowMode ? 1.015 : (config.rocketAccel ?? 1.05);
+
+      for (let i = 0; i < count; i++) {
+        // Calculate X positions: evenly distributed from left to right
+        const startX = spacing * (i + 1) + random(-30, 30); // Start from ground
+        const targetX = spacing * (i + 1) + random(-50, 50); // Target with slight variance
+
+        // Slight stagger (0-50ms) to make it feel more natural but still simultaneous
+        setTimeout(
+          () => {
+            fireworksRef.current.push(new Firework(startX, ch, targetX, targetY + random(-20, 20), speed, accel));
+          },
+          random(0, 50)
+        );
+      }
+    },
+    [config.rocketSpeed, config.rocketAccel]
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -328,13 +335,13 @@ export const Fireworks: React.FC<FireworksProps> = ({
       // Clear old particles for fresh start
       fireworksRef.current = [];
       particlesRef.current = [];
-      
+
       // Special Prize: Launch 10 SLOW rockets for dramatic effect!
       // These rockets fly slowly up into the dark sky before exploding together
       if (prizeId === 'special') {
         // Initial barrage of 10 slow rockets - fly majestically through darkness
         launchSimultaneousFireworks(10, true); // slowMode = true
-        
+
         // After the big explosion, continue with regular barrages
         setTimeout(() => launchSimultaneousFireworks(10, false), SPECIAL_SEQUENCE.ROCKETS_FLIGHT + 300);
         setTimeout(() => launchSimultaneousFireworks(10, false), SPECIAL_SEQUENCE.ROCKETS_FLIGHT + 1500);

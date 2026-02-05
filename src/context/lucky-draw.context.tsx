@@ -594,15 +594,19 @@ function reducer(state: LuckyDrawState, action: LuckyDrawAction): LuckyDrawState
     }
 
     case 'END_REPLAY': {
-      // End replay mode and go back to normal
+      const targetPrizeId = state.currentPrizeId;
+      const restoredSession = targetPrizeId
+        ? state.winners.filter(w => (w.status === 'pending_award' || w.status === 'absent') && w.prizeId === targetPrizeId)
+        : state.ceremony.sessionAwardees;
       return {
         ...state,
         ceremony: {
+          ...state.ceremony,
           isActive: false,
-          sessionAwardees: [],
           displayMode: 'drawing',
           isReplay: false,
           replayData: null,
+          sessionAwardees: restoredSession,
         },
       };
     }
@@ -1055,19 +1059,23 @@ export const LuckyDrawProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     },
     [broadcastState]
   );
-
   const endReplay = useCallback(() => {
     dispatch({ type: 'END_REPLAY' });
+    const targetPrizeId = state.currentPrizeId;
+    const restoredSession = targetPrizeId
+      ? state.winners.filter(w => (w.status === 'pending_award' || w.status === 'absent') && w.prizeId === targetPrizeId)
+      : state.ceremony.sessionAwardees;
     broadcastState({
       ceremony: {
+        ...state.ceremony,
         isActive: false,
-        sessionAwardees: [],
         displayMode: 'drawing',
         isReplay: false,
         replayData: null,
+        sessionAwardees: restoredSession,
       },
     });
-  }, [broadcastState]);
+  }, [broadcastState, state.currentPrizeId, state.winners, state.ceremony]);
 
   // Digit reveal actions
   const revealDigit = useCallback(

@@ -98,7 +98,7 @@ export const LuckyWinnerOwnerPart: React.FC<WinnerModalProps> = ({ awardees, url
           }}
         >
           <Typography sx={{ color: '#026D60', fontSize: 64, fontWeight: 700, lineHeight: 'normal', fontFamily: 'Montserrat, sans-serif' }}>
-            {employees.find(e => e.code === winner?.employeeCode)?.lotteryCode || ''}
+            {employees.find(e => e.code === winner?.employeeCode)?.lotteryCode || ''}{' '}
             {!hiddenDetails && winner?.employeeCode ? `- ${winner.employeeCode}` : ''}
           </Typography>
           <Typography

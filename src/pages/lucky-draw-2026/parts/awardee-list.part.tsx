@@ -91,7 +91,7 @@ export const AwardeeListPart: React.FC<AwardeeListPartProps> = ({ awardees, isRe
                             minWidth: winners.length === 1 ? 'auto' : 240,
                           }}
                         >
-                          {employees.find(e => e.code === awardee.employeeCode)?.lotteryCode || ''}
+                          {employees.find(e => e.code === awardee.employeeCode)?.lotteryCode || ''}{' '}
                           {!hiddenDetails && awardee?.employeeCode ? `- ${awardee.employeeCode}` : ''}
                         </Typography>
                         <ImageElement
