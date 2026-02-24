@@ -23,6 +23,3 @@ export type { GameState } from './game.service';
 // Channel
 export { ChannelService } from './channel.service';
 export type { ControlMessage, MessageHandler } from './channel.service';
-
-// Award History
-export * from './award-history.service';
