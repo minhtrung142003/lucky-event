@@ -48,11 +48,11 @@ const columns: Column[] = [
   },
   {
     id: 'department',
-    label: 'Bộ phận',
+    label: 'Chức vụ',
   },
   {
     id: 'part',
-    label: 'Đơn vị',
+    label: 'Khối',
   },
   {
     id: 'count',
@@ -107,7 +107,9 @@ export const LuckyDrawPage: React.FC<LuckyDrawPageProps> = ({}) => {
     >
       <Fade in={true} timeout={STYLE.ANIMATION_TIME * 1}>
         <Stack>
-          <TypographyGoldComponent variant="h2" content=" CHƯƠNG TRÌNH QUAY SỐ TRÚNG THƯỞNG" />
+          <Typography sx={{ color: '#F1EE99' }} variant="h2">
+            CHƯƠNG TRÌNH QUAY SỐ TRÚNG THƯỞNG
+          </Typography>
         </Stack>
       </Fade>
 

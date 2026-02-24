@@ -16,28 +16,37 @@ export const DescriptionPart: React.FC<DescriptionPartProps> = ({ setStart }) =>
     <React.Fragment>
       <Fade in={true} timeout={STYLE.ANIMATION_TIME * 2}>
         <Stack sx={{ alignItems: 'center' }}>
-          <TypographyGoldComponent variant="h3" content="THỂ LỆ CHƯƠNG TRÌNH" />
+          <Stack direction="row" alignItems="center" sx={{ gap: 2, width: 600 }}>
+            <Stack sx={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, #c8960c)' }} />
+            <TypographyGoldComponent variant="h4" content="THỂ LỆ CHƯƠNG TRÌNH" />
+            <Stack sx={{ flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, #c8960c)' }} />
+          </Stack>
 
           <Typography variant="h6" sx={{ textAlign: 'center', width: 700 }}>
-            Có 15 lần quay số, có 3 lượt quay số, mỗi lượt sẽ có 5 lần quay. Kết quả sẽ tương ứng với 5 ký tự trong MÃ SỐ NHÂN VIÊN của các thành viên
-            trong GIA ĐÌNH SEN VÀNG. Khi quay đủ 5 số, Anh/Chị nào có mã số nhân viên trùng khớp với kết quả của lần quay đó là người chiến thắng.
+            Có 15 lần quay số tổng cộng, chia thành 3 lượt quay, mỗi lượt sẽ có 5 lần quay. Kết quả sẽ tương ứng với 5 chữ số trong MÃ SỐ NHÂN VIÊN
+            của các thành viên tham gia.
           </Typography>
         </Stack>
       </Fade>
 
       <Fade in={true} timeout={STYLE.ANIMATION_TIME * 3}>
         <Stack sx={{ alignItems: 'center' }}>
-          <TypographyGoldComponent variant="h3" content="GIẢI THƯỞNG" />
-
-          <Typography variant="h5">15 NHẪN VÀNG THIẾT KẾ BỞI SEN VÀNG</Typography>
-
+          <Stack direction="row" alignItems="center" sx={{ gap: 2, width: 600 }}>
+            <Stack sx={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, #c8960c)' }} />
+            <TypographyGoldComponent variant="h4" content="GIẢI THƯỞNG" />
+            <Stack sx={{ flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, #c8960c)' }} />
+          </Stack>
           <RingGifComponent sx={{ width: 120, height: 120 }} />
         </Stack>
       </Fade>
 
       <Fade in={true} timeout={STYLE.ANIMATION_TIME * 4}>
         <Stack sx={{ alignItems: 'center' }}>
-          <TypographyGoldComponent variant="h3" content="TỔNG SỐ NHÂN VIÊN THAM DỰ" />
+          <Stack direction="row" alignItems="center" sx={{ gap: 2, width: 600 }}>
+            <Stack sx={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, #c8960c)' }} />
+            <TypographyGoldComponent variant="h4" content="TỔNG SỐ NHÂN VIÊN THAM DỰ" />
+            <Stack sx={{ flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, #c8960c)' }} />
+          </Stack>
 
           <StackRow>
             <Typography variant="h5">{employees.length}</Typography>

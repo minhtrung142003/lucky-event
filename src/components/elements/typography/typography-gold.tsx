@@ -44,7 +44,7 @@ export const TypographyGoldComponent: React.FC<TypographyGoldComponentProps> = (
           bottom: 0,
           backgroundImage: 'repeating-linear-gradient(5deg, #ffb338 0%, #77571d 23%, #ffb338 31%)',
           WebkitBackgroundClip: 'text',
-          color: palette.text.primary,
+          color: '#F1EE99',
           zIndex: 2,
         },
         ...sx,

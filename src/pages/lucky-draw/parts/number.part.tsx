@@ -130,8 +130,8 @@ export const NumberPart: React.FC<NumberPartProps> = ({
       <StackBgDefaultBorRadLayCol
         sx={{
           width: '100%',
-          maxWidth: 220,
-          height: 270,
+          maxWidth: 200,
+          height: 200,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',

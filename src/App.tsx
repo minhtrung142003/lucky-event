@@ -1,4 +1,4 @@
-import { Theme, ThemeProvider } from '@emotion/react'; // Rebuild trigger
+import { Theme, ThemeProvider } from '@emotion/react';
 import { createTheme, CssBaseline } from '@mui/material';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -8,25 +8,9 @@ import { GlobalReduxState } from './redux/store.interface';
 import { renderRoutes } from './router/render.route';
 import { routes } from './router/route.route';
 import { OPACITY } from './common/constant/opacity.constant';
-import { LuckyDrawProvider } from './context/lucky-draw.context';
-import { EffectsProvider } from './context/effects.context';
-
-// Preload heavy images at app startup to avoid blank screen on first navigation
-import backgroundImage from './assets/images/figma/background.png';
-
-// Preload function - starts loading immediately when app mounts
-const preloadImage = (src: string) => {
-  const img = new Image();
-  img.src = src;
-};
 
 export default function App() {
   const system = useSelector((state: GlobalReduxState) => state.system);
-
-  // Preload heavy background image on app mount
-  React.useEffect(() => {
-    preloadImage(backgroundImage);
-  }, []);
 
   const theme = createTheme({
     ...MODE[system.mode],
@@ -108,11 +92,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <LuckyDrawProvider>
-        <EffectsProvider>
-          <Routes>{renderRoutes(routes)}</Routes>
-        </EffectsProvider>
-      </LuckyDrawProvider>
+      <Routes>{renderRoutes(routes)}</Routes>
     </ThemeProvider>
   );
 }

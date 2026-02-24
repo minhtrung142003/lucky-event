@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import React, { ReactNode } from 'react';
 import { STYLE } from '../common/constant';
-import background from '../assets/images/background.jpg';
+import background from '../assets/images/background.png';
 
 export interface DefaultLayoutProps {
   children?: ReactNode;
