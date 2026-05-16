@@ -1,7 +1,7 @@
 import { Fade, Stack, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { OPACITY } from '../../common/constant/opacity.constant';
-import director from '../../assets/images/empty.svg';
+import director from '../../assets/images/director.png';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../../router';
 import { STYLE } from '../../common/constant';
