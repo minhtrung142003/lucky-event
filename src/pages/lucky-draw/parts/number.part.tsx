@@ -6,6 +6,7 @@ import question from '../../../assets/images/question.png';
 import { Employee } from '../../../common/constant/employees.constant';
 import { Winner } from '../lucky-draw.page';
 import { WinnerStatus } from '../lucky-draw.enum';
+import { motion } from 'framer-motion';
 
 export interface NumberPartProps {
   no: number;
@@ -125,45 +126,78 @@ export const NumberPart: React.FC<NumberPartProps> = ({
     setIsDisableAllButton(true);
   };
 
+  const cardVariants = {
+    spin: {
+      rotateY: [0, 360, 720, 1080],
+      scale: [1, 1.05, 1.1, 1.05, 1],
+      transition: {
+        duration: 1,
+        ease: 'easeInOut',
+      },
+    },
+  };
+
   return (
     <Stack sx={{ alignItems: 'center' }}>
-      <StackBgDefaultBorRadLayCol
-        sx={{
-          width: '100%',
-          maxWidth: 200,
-          height: 200,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: '4rem',
-          fontWeight: 'bold',
-          position: 'relative',
-          backgroundColor: '#f5f5f5',
-          borderRadius: '30px',
-          overflow: 'hidden',
-        }}
+      <motion.div
+        animate={isAnimating ? 'spin' : 'initial'}
+        variants={cardVariants}
+        style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
       >
-        {result[no] === null ? (
-          <AnimatedBox />
-        ) : (
-          <Typography
-            sx={{
-              color: isAnimating ? palette.text.secondary : palette.error.light,
-              transition: 'color 0.2s',
-              fontSize: 180,
-              fontWeight: 900,
-            }}
-          >
-            {randomTemp || result[no]}
-          </Typography>
-        )}
-      </StackBgDefaultBorRadLayCol>
+        <StackBgDefaultBorRadLayCol
+          sx={{
+            width: '100%',
+            maxWidth: 200,
+            height: 200,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '4rem',
+            fontWeight: 'bold',
+            position: 'relative',
+            background: result[no] ? `linear-gradient(135deg, ${palette.primary.main}20, ${palette.secondary.main}15)` : `${palette.background.paper}80`,
+            backdropFilter: 'blur(10px)',
+            border: `2px solid ${palette.primary.main}${result[no] ? 'cc' : '50'}`,
+            borderRadius: '30px',
+            overflow: 'hidden',
+            boxShadow: result[no]
+              ? `0 0 30px ${palette.primary.main}60, 0 0 60px ${palette.secondary.main}30, inset 0 0 20px ${palette.primary.main}20`
+              : `0 0 15px ${palette.primary.main}30, 0 0 30px ${palette.secondary.main}15`,
+            transition: 'all 0.3s ease',
+          }}
+        >
+          {result[no] === null ? (
+            <AnimatedBox />
+          ) : (
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Typography
+                sx={{
+                  background: `linear-gradient(135deg, ${palette.primary.main}, ${palette.secondary.main})`,
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  textShadow: `0 0 20px ${palette.primary.main}40`,
+                  transition: 'color 0.2s',
+                  fontSize: 180,
+                  fontWeight: 900,
+                }}
+              >
+                {randomTemp || result[no]}
+              </Typography>
+            </motion.div>
+          )}
+        </StackBgDefaultBorRadLayCol>
+      </motion.div>
 
       <ButtonElement
         content="QUAY SỐ"
         size="large"
         onClick={startRandomAnimation}
-        sx={{ width: 150 }}
+        sx={{ width: 150, marginTop: 2 }}
         disabled={isDisableAllButton ? isDisableAllButton : isAnimating || Boolean(result[no])}
       />
     </Stack>

@@ -13,17 +13,46 @@ export interface TagElementProps {
 export const TagElement: React.FC<TagElementProps> = ({ type, content, width }) => {
   const { palette } = useTheme();
 
+  const getTypeColor = () => {
+    switch (type) {
+      case 'success':
+        return palette.success.main;
+      case 'error':
+        return palette.error.main;
+      case 'warning':
+        return palette.warning.main;
+      case 'info':
+        return palette.info.main;
+      case 'secondary':
+        return palette.secondary.main;
+      case 'primary':
+      default:
+        return palette.primary.main;
+    }
+  };
+
+  const typeColor = getTypeColor();
+
   return (
     <Typography
       variant="caption"
       sx={{
         padding: `calc(${STYLE.PADDING_GAP_ITEM_SMALL} - 4px) ${STYLE.PADDING_GAP_ITEM_SMALL}`,
-        backgroundColor: `${palette[type].dark}${OPACITY[10]}`,
+        backgroundColor: `${typeColor}15`,
+        backdropFilter: 'blur(8px)',
+        border: `1.5px solid ${typeColor}60`,
         borderRadius: STYLE.BORDER_RADIUS_ELEMENT_TAG,
-        color: palette[type].main,
+        color: typeColor,
         width,
         textAlign: 'center',
+        boxShadow: `0 0 12px ${typeColor}25, inset 0 0 8px ${typeColor}10`,
+        fontWeight: 600,
+        transition: 'all 0.3s ease',
         ...getLimitLineCss(1),
+        '&:hover': {
+          backgroundColor: `${typeColor}25`,
+          boxShadow: `0 0 20px ${typeColor}40, inset 0 0 12px ${typeColor}15`,
+        },
       }}
     >
       {content}
