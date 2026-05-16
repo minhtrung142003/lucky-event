@@ -5,7 +5,7 @@ import { employees } from '../../../common/constant/employees.constant';
 import { StackRow } from '../../../components/styles/stack.style';
 import { STYLE } from '../../../common/constant';
 import { TypographyGoldComponent } from '../../../components/elements/typography/typography-gold';
-import { RingGifComponent } from '../../../components/gif/ring-gif.component';
+import { IconElement } from '../../../components/elements/icon/icon.element';
 import { motion } from 'framer-motion';
 
 export interface DescriptionPartProps {
@@ -122,11 +122,16 @@ export const DescriptionPart: React.FC<DescriptionPartProps> = ({ setStart }) =>
                 }}
               />
             </Stack>
-            <motion.div
-              animate={{ y: [0, -20, 0], rotateZ: [-5, 0, 5, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              <RingGifComponent sx={{ width: 120, height: 120, marginTop: 2 }} />
+            <motion.div animate={{ y: [0, -12, 0] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}>
+              <IconElement
+                icon="emoji_events"
+                sx={{
+                  fontSize: 88,
+                  marginTop: 2,
+                  color: palette.secondary.main,
+                  filter: `drop-shadow(0 0 16px ${palette.secondary.main}90)`,
+                }}
+              />
             </motion.div>
           </Stack>
         </motion.div>

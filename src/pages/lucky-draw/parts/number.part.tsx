@@ -88,7 +88,7 @@ export const NumberPart: React.FC<NumberPartProps> = ({
 
           return newResult;
         });
-      }, 50);
+      }, 120);
 
       // Stop the interval after 1 second
       timeout = setTimeout(() => {
@@ -156,7 +156,6 @@ export const NumberPart: React.FC<NumberPartProps> = ({
             fontWeight: 'bold',
             position: 'relative',
             background: result[no] ? `linear-gradient(135deg, ${palette.primary.main}20, ${palette.secondary.main}15)` : `${palette.background.paper}80`,
-            backdropFilter: 'blur(10px)',
             border: `2px solid ${palette.primary.main}${result[no] ? 'cc' : '50'}`,
             borderRadius: '30px',
             overflow: 'hidden',

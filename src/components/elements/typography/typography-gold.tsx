@@ -1,4 +1,4 @@
-import { Typography, TypographyProps, useTheme } from '@mui/material';
+import { Box, Typography, TypographyProps, useTheme } from '@mui/material';
 import React from 'react';
 
 export interface TypographyGoldComponentProps extends TypographyProps {
@@ -6,7 +6,6 @@ export interface TypographyGoldComponentProps extends TypographyProps {
 }
 
 export const TypographyGoldComponent: React.FC<TypographyGoldComponentProps> = ({ content, sx, ...rest }) => {
-  const { palette } = useTheme();
 
   return (
     <Typography
@@ -42,7 +41,7 @@ export const TypographyGoldComponent: React.FC<TypographyGoldComponentProps> = (
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: 'repeating-linear-gradient(5deg, #ffb338 0%, #77571d 23%, #ffb338 31%)',
+          backgroundImage: 'repeating-linear-gradient(5deg, #ffb338 35%, #77571d 23%, #ffb338 31%)',
           WebkitBackgroundClip: 'text',
           color: '#F1EE99',
           zIndex: 2,
@@ -50,7 +49,9 @@ export const TypographyGoldComponent: React.FC<TypographyGoldComponentProps> = (
         ...sx,
       }}
     >
-      {content}
+      <Box component="span" aria-hidden sx={{ opacity: 0 }}>
+        {content}
+      </Box>
     </Typography>
   );
 };

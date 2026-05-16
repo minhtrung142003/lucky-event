@@ -13,8 +13,8 @@ import { TypographyGoldComponent } from '../../components/elements/typography/ty
 import { WinnerStatus } from './lucky-draw.enum';
 import { TagElement } from '../../components/elements/tag/tag.element';
 import { getLimitLineCss } from '../../common/utils/other/get-limit-line-css.utils';
-import { RingGifComponent } from '../../components/gif/ring-gif.component';
-import { CongratulationsGifComponent } from '../../components/gif/congratulations-gif.component';
+import { ConfettiEffect } from '../../components/effects/confetti-effect.component';
+import { DrawRoundHeader } from '../../components/decorations/draw-round-header.component';
 import { useSelector } from 'react-redux';
 import { GlobalReduxState } from '../../redux/store.interface';
 import { useAppDispatch } from '../../redux/store.redux';
@@ -143,30 +143,24 @@ export const LuckyDrawPage: React.FC<LuckyDrawPageProps> = ({}) => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6 }}
             >
-              <StackRowAlignJustCenter sx={{ gap: 5, marginY: 3 }}>
-                <motion.div animate={{ rotate: 360 }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}>
-                  <RingGifComponent />
-                </motion.div>
-                <motion.div animate={{ rotate: -360 }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}>
-                  <RingGifComponent />
-                </motion.div>
-                <TypographyGoldComponent variant="h5" sx={{ width: 300 }} content={`LẦN QUAY THỨ ${system.count}`} />
-                <motion.div animate={{ rotate: 360 }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}>
-                  <RingGifComponent />
-                </motion.div>
-                <motion.div animate={{ rotate: -360 }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}>
-                  <RingGifComponent />
-                </motion.div>
-              </StackRowAlignJustCenter>
+              <DrawRoundHeader round={system.count} />
             </motion.div>
           </Fade>
 
           {winner ? (
-            <Stack sx={{ alignItems: 'center', position: 'relative', width: '100%' }}>
-              {/* ANIMATION */}
-              <CongratulationsGifComponent sx={{ top: -100, left: 200 }} />
-              <CongratulationsGifComponent sx={{ top: -100, right: 200 }} />
+            <Stack
+              sx={{
+                alignItems: 'center',
+                position: 'relative',
+                width: '100%',
+                minHeight: 320,
+                overflow: 'hidden',
+                py: 2,
+              }}
+            >
+              <ConfettiEffect active />
 
+              <Stack sx={{ position: 'relative', zIndex: 1, alignItems: 'center', width: '100%' }}>
               <Grow in={true} timeout={STYLE.ANIMATION_TIME * 2}>
                 <motion.div
                   initial={{ scale: 0 }}
@@ -242,6 +236,7 @@ export const LuckyDrawPage: React.FC<LuckyDrawPageProps> = ({}) => {
                   }}
                 />
               </StackRow>
+              </Stack>
             </Stack>
           ) : (
             <Stack sx={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', width: '100%', gap: 5, marginY: 3 }}>
@@ -277,7 +272,7 @@ export const LuckyDrawPage: React.FC<LuckyDrawPageProps> = ({}) => {
               <TypographyGoldComponent variant="h5" content="DANH SÁCH NHÂN VIÊN TRÚNG THƯỞNG" />
               <ButtonIconSquareElement icon="restart_alt" onClick={() => setOpen(true)} sx={{ width: '36.5px', height: '36.5px' }} />
             </StackRowAlignCenterJustBetween>
-            <TableComponent columns={columns} rows={system.winners} />
+            <TableComponent columns={columns} rows={winner ? [winner, ...system.winners] : system.winners} />
           </Stack>
 
           <DialogElement

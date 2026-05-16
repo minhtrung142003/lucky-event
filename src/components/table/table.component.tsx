@@ -1,4 +1,4 @@
-import { Fade, Table, TableBody, TableCell, TableRow, useTheme } from '@mui/material';
+import { Table, TableBody, TableCell, TableRow, useTheme } from '@mui/material';
 import React from 'react';
 import { STYLE } from '../../common/constant';
 import { EmptyComponent } from '../empty/empty.component';
@@ -74,32 +74,30 @@ export const TableComponent: React.FC<TableComponentProps> = ({
             </TableRow>
           ) : rows.length ? (
             rows.map((row, index) => (
-              <Fade in={true} key={index} timeout={index * 120}>
-                <TableRow
-                  hover
-                  tabIndex={-1}
-                  key={index}
-                  onClick={() => onClickRow && onClickRow(row, index)}
-                  sx={{ cursor: onClickRow ? 'pointer' : 'default' }}
-                >
-                  {columns.map(column => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      sx={{
-                        padding: STYLE.PADDING_GAP_ITEM,
-                        color: conditionDisabledRow
-                          ? row[conditionDisabledRow.columnId] === conditionDisabledRow.compareWith
-                            ? palette.divider
-                            : 'none'
-                          : 'none',
-                      }}
-                    >
-                      {column.render ? column.render(row, index) : row[column.id]}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </Fade>
+              <TableRow
+                hover
+                tabIndex={-1}
+                key={`${row.code ?? row.id ?? index}-${index}`}
+                onClick={() => onClickRow && onClickRow(row, index)}
+                sx={{ cursor: onClickRow ? 'pointer' : 'default' }}
+              >
+                {columns.map(column => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    sx={{
+                      padding: STYLE.PADDING_GAP_ITEM,
+                      color: conditionDisabledRow
+                        ? row[conditionDisabledRow.columnId] === conditionDisabledRow.compareWith
+                          ? palette.divider
+                          : 'none'
+                        : 'none',
+                    }}
+                  >
+                    {column.render ? column.render(row, index) : row[column.id]}
+                  </TableCell>
+                ))}
+              </TableRow>
             ))
           ) : (
             <TableRow>

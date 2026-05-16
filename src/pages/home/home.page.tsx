@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '../../router';
 import { STYLE } from '../../common/constant';
 import { TypographyGoldComponent } from '../../components/elements/typography/typography-gold';
-import { RingGifComponent } from '../../components/gif/ring-gif.component';
+import { IconElement } from '../../components/elements/icon/icon.element';
 import { motion } from 'framer-motion';
 
 export interface HomePageProps {}
@@ -150,7 +150,14 @@ export const HomePage: React.FC<HomePageProps> = ({}) => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <RingGifComponent sx={{ width: 120, height: 120 }} />
+                  <IconElement
+                    icon="celebration"
+                    sx={{
+                      fontSize: 96,
+                      color: palette.primary.main,
+                      filter: `drop-shadow(0 0 20px ${palette.primary.main}90)`,
+                    }}
+                  />
                 </motion.div>
               </Stack>
             </motion.div>
