@@ -1,5 +1,5 @@
 export const PAGE = {
-  HOME: '/',
-  LUCKY_DRAW: '/lucky-draw',
+  HOME: '/home',
+  LUCKY_DRAW: '/',
   NOT_FOUND: '/*',
 };
