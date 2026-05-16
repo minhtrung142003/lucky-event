@@ -17,9 +17,21 @@ export const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
         backgroundImage: `url(${background})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        position: 'relative',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(192, 0, 255, 0.03) 100%)',
+          pointerEvents: 'none',
+        },
       }}
     >
-      <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>{children}</Stack>
+      <Stack sx={{ flex: 1, alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 1 }}>{children}</Stack>
     </Stack>
   );
 };

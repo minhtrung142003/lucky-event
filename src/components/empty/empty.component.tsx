@@ -1,6 +1,6 @@
 import { Box, Fade, Stack } from '@mui/material';
 import React from 'react';
-import empty from '../../assets/images/empty.svg';
+import empty from '../../assets/images/empty.png';
 import { STYLE } from '../../common/constant';
 
 export interface EmptyComponentProps {}

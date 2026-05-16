@@ -15,12 +15,12 @@ const BaseRing = styled(Box)({
   width: 60,
   height: 60,
   transition: 'transform 0.3s ease-in-out, filter 0.3s ease-in-out',
-  perspective: '1000px', // Tạo chiều sâu 3D
-  transform: 'rotateX(20deg) rotateY(20deg)', // Xoay mạnh hơn một chút
-  filter: 'drop-shadow(0px 20px 30px rgba(255, 215, 0, 0.6))',
+  perspective: '1000px',
+  transform: 'rotateX(15deg) rotateY(15deg) rotateZ(5deg)',
+  filter: 'drop-shadow(0px 15px 30px rgba(0, 217, 255, 0.4))',
   '&:hover': {
-    transform: 'rotateX(0deg) rotateY(0deg) scale(1.1)', // Xoay lại phẳng và phóng to khi hover
-    filter: 'drop-shadow(0px 25px 35px rgba(255, 215, 0, 0.6))', // Làm bóng mạnh hơn khi hover
+    transform: 'rotateX(5deg) rotateY(5deg) rotateZ(0deg) scale(1.15)',
+    filter: 'drop-shadow(0px 20px 40px rgba(0, 217, 255, 0.6), 0px 0px 20px rgba(192, 0, 255, 0.3))',
   },
 });
 
